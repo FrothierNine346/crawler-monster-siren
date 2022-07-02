@@ -67,13 +67,6 @@ class MonsterSiren:
             if not os.path.exists(path):
                 os.mkdir(path)
 
-        def list_to_str(list_str):
-            iter_list = iter(list_str)
-            temp = next(iter_list)
-            for temp_str in iter_list:
-                temp += f'，{temp_str}'
-            return temp
-
         def url_download(url, headers, name, path):
             if os.path.isfile(f'{path}/{name}'):
                 # print(f'{name}已存在')
@@ -98,14 +91,14 @@ class MonsterSiren:
                 with open(second_path + '/' + 'info.txt', 'w', encoding='utf-8') as f:
                     f.write(f'专辑名称：{data["name"]}\n')
                     f.write(f'专辑属于：{data["belong"]}\n')
-                    f.write(f'专辑作者：{list_to_str(data["artistes"])}\n')
+                    f.write(f'专辑作者：{"、".join(data["artistes"])}\n')
                     # f-string表达式不能出现反斜杠，用format方法替换
                     f.write('专辑介绍：{}\n'.format(
                         data["intro"].replace("\n", "\n                ")))
                     f.write('歌曲列表：\n')
                     for song in data['songs']:
                         f.write(
-                            f'{song["name"]}   作者：{list_to_str(song["artists"])}\n')
+                            f'{song["name"]}   作者：{"、".join(song["artists"])}\n')
             for song in tqdm(data['songs'], desc=f'{data["name"]}'):
                 third_path = second_path + '/' + \
                     path_detection.sub('!', song['name'])
