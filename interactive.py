@@ -162,7 +162,7 @@ class MansterSirenInteractive:
         is_path(first_path)
         for data in self.__get_album_info():
             second_path = first_path + '/' + \
-                path_detection.sub('!', data['name'])
+                path_detection.sub('!', data['name']).strip()
             is_path(second_path)
             if not os.path.isfile(second_path + '/' + 'info.txt'):
                 with open(second_path + '/' + 'info.txt', 'w', encoding='utf-8') as f:
