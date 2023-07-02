@@ -16,7 +16,7 @@
 **interactive.py**以交互模式运行，可以选定前多少个专辑下载，无需一次下载全部专辑  
 **interactive.py**使用方法  
 安装**Python3.10**解释器并安装依赖模块。
-运行 **python main.py**  
+运行 **python interactive.py**  
 会自动在当前目录生成 **monster-siren** 文件夹，并把爬取到的歌曲保存至该文件夹下。 
 
 ### 注意  
