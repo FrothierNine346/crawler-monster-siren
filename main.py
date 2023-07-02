@@ -3,6 +3,7 @@ from tqdm import tqdm
 import json
 import re
 import os
+import time
 
 
 class MonsterSiren:
@@ -83,10 +84,13 @@ class MonsterSiren:
 
         first_path = './monster-siren'
         is_path(first_path)
+        current_time = time.time()
+        time_offset = 0
         for data in self.__get_album_info():
             second_path = first_path + '/' + \
                 path_detection.sub('!', data['name']).strip()
             is_path(second_path)
+            os.utime(second_path, (current_time, current_time + time_offset))
             if not os.path.isfile(second_path + '/' + 'info.txt'):
                 with open(second_path + '/' + 'info.txt', 'w', encoding='utf-8') as f:
                     f.write(f'专辑名称：{data["name"]}\n')
@@ -131,7 +135,7 @@ class MonsterSiren:
                     name=f'封面.{data["coverDeUrl"].split(".")[-1]}',
                     path=second_path
                 )
-            pass
+            time_offset -= 60
 
 
 if __name__ == '__main__':
