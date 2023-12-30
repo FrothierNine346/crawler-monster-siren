@@ -77,10 +77,12 @@ class MonsterSiren:
                 pass
             response = requests.get(
                 url=url,
-                headers=headers
+                headers=headers,
+                stream=True
             )
             with open(f'{path}/{name}', 'wb') as file:
-                file.write(response.content)
+                for data in response.iter_content(4096):
+                    file.write(data)
 
         first_path = './monster-siren'
         is_path(first_path)
@@ -89,6 +91,8 @@ class MonsterSiren:
         for data in self.__get_album_info():
             second_path = first_path + '/' + \
                 path_detection.sub('!', data['name']).strip()
+            if second_path.endswith('.'):
+                second_path += '!'
             is_path(second_path)
             os.utime(second_path, (current_time, current_time + time_offset))
             if not os.path.isfile(second_path + '/' + 'info.txt'):
@@ -106,6 +110,8 @@ class MonsterSiren:
             for song in tqdm(data['songs'], desc=f'{data["name"]}'):
                 third_path = second_path + '/' + \
                     path_detection.sub('!', song['name'])
+                if third_path.endswith('.'):
+                    third_path += '!'
                 is_path(third_path)
                 if song['lyricUrl'] is not None:
                     url_download(
